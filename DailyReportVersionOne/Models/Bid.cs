@@ -8,7 +8,7 @@
         public int Workana {  get; set; }
         public int Crowdwork {  get; set; }
         public int OtherSite {  get; set; }
-        public DateOnly BidRecordDate { get; set; }
-        public string UserName {  get; set; }
+        public DateTime BidRecordDate { get; set; }
+        public string? UserName {  get; set; }
     }
 }

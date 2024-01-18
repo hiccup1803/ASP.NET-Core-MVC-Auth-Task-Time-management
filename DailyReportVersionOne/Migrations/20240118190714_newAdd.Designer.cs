@@ -4,6 +4,7 @@ using DailyReportVersionOne.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DailyReportVersionOne.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240118190714_newAdd")]
+    partial class newAdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,8 +131,8 @@ namespace DailyReportVersionOne.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("BidRecordDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("BidRecordDate")
+                        .HasColumnType("date");
 
                     b.Property<int>("Crowdwork")
                         .HasColumnType("int");
@@ -171,11 +174,11 @@ namespace DailyReportVersionOne.Migrations
                     b.Property<int>("ProjectPrice")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("ProjectRecordDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("ProjectRecordDate")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime>("ProjectStartDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("ProjectStartDate")
+                        .HasColumnType("date");
 
                     b.Property<int>("ProjectState")
                         .HasColumnType("int");
@@ -199,8 +202,8 @@ namespace DailyReportVersionOne.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("StudyRecordDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("StudyRecordDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");

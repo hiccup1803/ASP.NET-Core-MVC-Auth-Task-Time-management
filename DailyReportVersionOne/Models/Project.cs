@@ -8,8 +8,8 @@
         public int ProjectPrice { get; set; }
         public string? ClientCountry { get; set; }
         public int ProjectState { get; set; }
-        public DateOnly ProjectStartDate {get; set;}
-        public DateOnly ProjectRecordDate { get; set;}
-        public string UserName { get; set; }
+        public DateTime ProjectStartDate {get; set;}
+        public DateTime ProjectRecordDate { get; set;}
+        public string? UserName { get; set; }
     }
 }
