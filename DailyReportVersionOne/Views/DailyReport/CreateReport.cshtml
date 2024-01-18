@@ -4,3 +4,118 @@
     ViewBag.Title = "Create Report";
 }
 <h2>Daily Report</h2>
+
+<form method="post" class="form-horizontal">
+    <div class="card mb-3 mt-5">
+        <h3 class="card-header">Project</h3>
+        <div class="form-group card-body">
+            <div class="row">
+                <div class="col-2 justify-content-center">
+                    <label asp-for="MyProject.ProjectName" class="col-form-label"></label>
+                    <div class="w-auto">
+                        <input asp-for="MyProject.ProjectName" class="form-control">
+                        <span asp-validation-for="MyProject.ProjectName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-2">
+                    <label asp-for="MyProject.ProjectPrice" class="col-form-label"></label>
+                    <div class="w-auto">
+                        <input asp-for="MyProject.ProjectPrice" class="form-control">
+                        <span asp-validation-for="MyProject.ProjectPrice" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-2">
+                    <label asp-for="MyProject.ClientCountry" class="col-form-label"></label>
+                    <div class="w-auto">
+                        <input asp-for="MyProject.ClientCountry" class="form-control">
+                        <span asp-validation-for="MyProject.ClientCountry" class="text-danger"></span>
+                    </div>
+                </div>
+            
+          
+                <div class="col-2">
+                    <label asp-for="MyProject.ProjectState" class="col-form-label"></label>
+                    <div class="w-auto">
+                        <input asp-for="MyProject.ProjectState" class="form-control">
+                        <span asp-validation-for="MyProject.ProjectState" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="col-2">
+                    <label asp-for="MyProject.ProjectStartDate" class="col-form-label"></label>
+                    <div class="w-auto">
+                        <input asp-for="MyProject.ProjectStartDate" type ="date" class="form-control">
+                        <span asp-validation-for="MyProject.ProjectStartDate" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="card mb-5">
+        <h3 class="card-header">Bid</h3>
+        <div class="form-group card-body">
+            <div class="row">
+                <div class="col-2 justify-content-center">
+                    <label asp-for="MyBid.Upwork" class="col-form-label"></label>
+                    <div class="w-auto">
+                        <input asp-for="MyBid.Upwork" class="form-control">
+                        <span asp-validation-for="MyBid.Upwork" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-2">
+                    <label asp-for="MyBid.Freelancer" class="col-form-label"></label>
+                    <div class="w-auto">
+                        <input asp-for="MyBid.Freelancer" class="form-control">
+                        <span asp-validation-for="MyBid.Freelancer" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-2">
+                    <label asp-for="MyBid.Workana" class="col-form-label"></label>
+                    <div class="w-auto">
+                        <input asp-for="MyBid.Workana" class="form-control">
+                        <span asp-validation-for="MyBid.Workana" class="text-danger"></span>
+                    </div>
+                </div>
+            
+                <div class="col-2">
+                    <label asp-for="MyBid.Crowdwork" class="col-form-label"></label>
+                    <div class="w-auto">
+                        <input asp-for="MyBid.Crowdwork" class="form-control">
+                        <span asp-validation-for="MyBid.Crowdwork" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="col-2">
+                    <label asp-for="MyBid.OtherSite" class="col-form-label"></label>
+                    <div class="w-auto">
+                        <input asp-for="MyBid.OtherSite" class="form-control">
+                        <span asp-validation-for="MyBid.OtherSite" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="card mb-5">
+        <h3 class="card-header">Study</h3>
+        <div class="form-group card-body">
+            <div class="row">
+                <div class="col-5">
+                    <label asp-for="Study.Description" class="col-form-label"> What did you study today?</label>
+                    <div class="w-auto">
+                        <textarea asp-for="Study.Description" class="form-control"></textarea>
+                        <span asp-validation-for="Study.Description" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
