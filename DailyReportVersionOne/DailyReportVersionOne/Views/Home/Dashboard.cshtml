@@ -1,0 +1,60 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@model DashboardViewModel
+@inject UserManager<ApplicationUser> _userManager
+@{
+    ViewData["Title"] = "Dashboard";
+    var users = _userManager.Users.ToList();
+}
+<h1>@ViewData["Title"]   (@DateTime.Today.ToString("D"))</h1>
+@foreach(var user in users)
+{
+    var MyProject = Model.Projects.FirstOrDefault(p => p.UserName == user.UserName);
+    var MyBid = Model.Bids.FirstOrDefault(p => p.UserName == user.UserName);
+    var MyStudy = Model.Studies.FirstOrDefault(p => p.UserName == user.UserName);
+    if (MyBid == null) continue;
+    <div class="card mb-3">
+        <div class="card-header">
+            @user.UserName
+        </div>
+        <div class="card-body">
+             <div class="card-title">
+                 Project:
+                @if(MyProject == null)
+                {
+                    <p>Project does not exist.</p>
+                }
+                else
+                {
+                    <div class="row justify-content-center">
+                        <div class="col-2">Name: @MyProject.ProjectName</div>
+                        <div class="col-2">Budget: @MyProject.ProjectPrice US$</div>
+                        <div class="col-2">Client: @MyProject.ClientCountry</div>
+                        <div class="col-2">Progress: @MyProject.ProjectState %</div>
+                        <div class="col-2">Start: @MyProject.ProjectStartDate.Date.ToString("d")</div>
+                   </div>
+                }
+                
+             </div>
+             <div class="card-title">
+                 Bid:
+                <div class="row justify-content-center">
+                    <div class="col-2"> Upwork: @MyBid.Upwork</div>
+                    <div class="col-2"> Freelancer: @MyBid.Freelancer</div>
+                    <div class="col-2"> Workana: @MyBid.Workana</div>
+                    <div class="col-2"> CrowdWorks: @MyBid.Crowdwork</div>
+                    <div class="col-2"> OtherSites: @MyBid.OtherSite</div>
+
+                </div>
+             </div>
+            <div class="card-title">
+                Study:
+                @MyStudy.Description ;
+            </div>
+
+        </div>
+        <div class="card-footer">
+            Success
+        </div>
+    </div>
+}
