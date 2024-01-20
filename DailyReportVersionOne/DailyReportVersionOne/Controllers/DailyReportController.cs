@@ -2,6 +2,13 @@
 using DailyReportVersionOne.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Sockets;
+using System.Net.WebSockets;
+using System;
+using DailyReportVersionOne.WebSockets;
+using System.Text.Json;
+using System.Text;
+using System.Threading;
 namespace DailyReportVersionOne.Controllers
 {
     public class DailyReportController : Controller
@@ -51,7 +58,29 @@ namespace DailyReportVersionOne.Controllers
                     newStudy.StudyRecordDate = CurrentDate;
                     _context.Studies.Add(newStudy);
                     _context.SaveChanges();
-                    return RedirectToAction("Index", "Home");
+
+
+                    //var socket = new WebSocket(connectionUrl + UserName);
+                    string connectionUrl = "ws://localhost:5099/ws?username=";
+                    var socket = new ClientWebSocket();
+                    await socket.ConnectAsync(new Uri(connectionUrl + UserName), CancellationToken.None);
+                    string data = "Here DailyReport Newly Added!!!";
+                    ClientMessage message = new ClientMessage();
+                    message.Type = "chat";
+                    message.Sender = UserName;
+                    message.Content = data;
+                    message.Receiver = "Everybody";
+                    message.IsPrivate = false;
+
+                    string json = JsonSerializer.Serialize(message);
+
+                    byte[] bytes = Encoding.UTF8.GetBytes(json);
+
+                    await socket.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
+                    await socket.CloseAsync(closeStatus: WebSocketCloseStatus.NormalClosure,
+                                    statusDescription: "ConnectionClosed",
+                                    cancellationToken: CancellationToken.None);
+                    return RedirectToAction("Dashboard", "Home");
                 }
                 ViewBag.ErrorMessage = $"You already reported today!!!";
                 return View();

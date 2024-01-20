@@ -35,13 +35,20 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 //builder.services.addwebsocketmanager();
 
+builder.Services.AddTransient<ConnectionManager>();
+builder.Services.AddSingleton<ChatHandler>();
+
+
 var app = builder.Build();
-var serviceScopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
-var serviceProvider = serviceScopeFactory.CreateScope().ServiceProvider;
 
-app.UseWebSockets();
-app.MapWebSocketManager("/ws", serviceProvider.GetService<NotificationsMessageHandler>());
-
+var webSocketOptions = new WebSocketOptions()
+{
+    KeepAliveInterval = TimeSpan.FromSeconds(120),
+    ReceiveBufferSize = 4 * 1024
+};
+app.UseWebSockets(webSocketOptions);
+var handler = app.Services.GetRequiredService<ChatHandler>();
+app.UseMiddleware<WebSocketMiddleware>(handler);
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
