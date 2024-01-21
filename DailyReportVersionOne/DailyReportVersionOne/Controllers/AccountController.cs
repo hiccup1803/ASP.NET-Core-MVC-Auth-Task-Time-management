@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using DailyReportVersionOne.WebSockets;
 namespace DailyReportVersionOne.Controllers
 {
     public class AccountController : Controller
@@ -37,8 +37,8 @@ namespace DailyReportVersionOne.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("index", "home");
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Login", "Account");
                 }
                 foreach(var error in result.Errors)
                 {

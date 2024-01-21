@@ -1,4 +1,5 @@
 using DailyReportVersionOne.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
@@ -26,6 +27,7 @@ namespace DailyReportVersionOne.Controllers
         {
             return View();
         }
+        [Authorize]
         [HttpGet("Dashboard/Id")]
         public IActionResult Dashboard(string id)
         {

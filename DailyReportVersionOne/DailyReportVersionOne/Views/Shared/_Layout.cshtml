@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<ApplicationUser> SignInManager
+@using Microsoft.EntityFrameworkCore;
+@inject SignInManager<ApplicationUser> _signInManager
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,23 +36,24 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark"asp-controller="Home" asp-action="Dashboard" asp-route-Id="@DateTime.Now.ToString()">Dashboard</a>
-                        </li>
-                        @if (SignInManager.IsSignedIn(User))
+                        
+                        @if (_signInManager.IsSignedIn(User))
                         {
-                            
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Dashboard" asp-route-Id="@DateTime.Now.ToString()">Dashboard</a>
+                            </li>
                             @if (User.IsInRole("Admin") || User.IsInRole("Master"))
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="ListRoles">Roles</a>
                                 </li>
                             }
-                            
+
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="DailyReport" asp-action="CreateReport" >Daily Report</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="DailyReport" asp-action="CreateReport">Daily Report</a>
                             </li>
-                            
+
                             <li class="nav-item">
                                 <form method="post" asp-controller="account" asp-action="logout">
                                     <button type="submit" style="width:auto"
@@ -60,10 +62,11 @@
                                     </button>
                                 </form>
                             </li>
-                            
+
                         }
-                        else{
-                            
+                        else
+                        {
+
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Sign In</a>
                             </li>
@@ -76,11 +79,10 @@
     <div class="container">
         <main role="main">
             <div style="min-height:100px">
-
             </div>
-           
-                @RenderBody()
-            
+
+            @RenderBody()
+
         </main>
     </div>
 
@@ -95,5 +97,7 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    
 </body>
+    
 </html>
