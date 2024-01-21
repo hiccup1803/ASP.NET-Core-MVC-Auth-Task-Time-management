@@ -64,7 +64,21 @@ namespace DailyReportVersionOne.Controllers
                     string connectionUrl = "ws://localhost:5099/ws?username=";
                     var socket = new ClientWebSocket();
                     await socket.ConnectAsync(new Uri(connectionUrl + UserName), CancellationToken.None);
-                    string data = "Here DailyReport Newly Added!!!";
+                    //string data = "Here DailyReport Newly Added!!!";
+                    var data1 = new { username = UserName, 
+                        projectName = newProject.ProjectName,
+                        projectPrice = newProject.ProjectPrice,
+                        clientCountry = newProject.ClientCountry,
+                        projectState = newProject.ProjectState, 
+                        projectStatrtDate = newProject.ProjectStartDate,
+                        upwork = newBid.Upwork,
+                        freelancer = newBid.Freelancer,
+                        workana = newBid.Workana,
+                        crowdwork = newBid.Crowdwork,
+                        othersite = newBid.OtherSite,
+                        studyDescription = newStudy.Description
+                    };
+                    string data = JsonSerializer.Serialize(data1);
                     ClientMessage message = new ClientMessage();
                     message.Type = "chat";
                     message.Sender = UserName;
@@ -80,9 +94,9 @@ namespace DailyReportVersionOne.Controllers
                     await socket.CloseAsync(closeStatus: WebSocketCloseStatus.NormalClosure,
                                     statusDescription: "ConnectionClosed",
                                     cancellationToken: CancellationToken.None);
-                    return RedirectToAction("Dashboard", "Home");
+                    return RedirectToAction("Index", "Home");
                 }
-                ViewBag.ErrorMessage = $"You already reported today!!!";
+                ViewBag.ErrorMessage = $"Again";
                 return View();
             }
 

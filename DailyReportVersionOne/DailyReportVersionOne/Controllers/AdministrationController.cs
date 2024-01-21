@@ -247,5 +247,112 @@ namespace DailyReportVersionOne.Controllers
 
             return RedirectToAction("EditRole", new { roleId = roleId });
         }
+        [HttpGet]
+        public IActionResult ListUsers()
+        {
+            var users = _userManager.Users;
+            return View(users);
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditUser(string UserId)
+        {
+            //First Fetch the User Details by UserId
+            var user = await _userManager.FindByIdAsync(UserId);
+
+            //Check if User Exists in the Database
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {UserId} cannot be found";
+                return View("NotFound");
+            }
+
+            // GetClaimsAsync retunrs the list of user Claims
+            var userClaims = await _userManager.GetClaimsAsync(user);
+
+            // GetRolesAsync returns the list of user Roles
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            //Store all the information in the EditUserViewModel instance
+            var model = new EditUserViewModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                UserName = user.UserName,
+                Roles = userRoles
+            };
+
+            //Pass the Model to the View
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserViewModel model)
+        {
+            var user = await _userManager.FindByIdAsync(model.Id);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {model.Id} cannot be found";
+                return View("NotFound");
+            }
+            else
+            {
+                //Populate the user instance with the data from EditUserViewModel
+                user.Email = model.Email;
+                user.UserName = model.UserName;
+
+                //UpdateAsync Method will update the user data in the AspNetUsers Identity table
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    //Once user data updated redirect to the ListUsers view
+                    return RedirectToAction("ListUsers");
+                }
+                else
+                {
+                    //In case any error, stay in the same view and show the model validation error
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                }
+
+                return View(model);
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(string UserId)
+        {
+            //First Fetch the User you want to Delete
+            var user = await _userManager.FindByIdAsync(UserId);
+
+            if (user == null)
+            {
+                // Handle the case where the user wasn't found
+                ViewBag.ErrorMessage = $"User with Id = {UserId} cannot be found";
+                return View("NotFound");
+            }
+            else
+            {
+                //Delete the User Using DeleteAsync Method of UserManager Service
+                var result = await _userManager.DeleteAsync(user);
+
+                if (result.Succeeded)
+                {
+                    // Handle a successful delete
+                    return RedirectToAction("ListUsers");
+                }
+                else
+                {
+                    // Handle failure
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                }
+
+                return View("ListUsers");
+            }
+        }
     }
 }

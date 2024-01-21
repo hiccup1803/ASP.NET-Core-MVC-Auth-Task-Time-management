@@ -73,6 +73,10 @@
             "WebSocketManager": {
               "target": "Package",
               "version": "[1.0.1, )"
+            },
+            "toastr": {
+              "target": "Package",
+              "version": "[2.1.1, )"
             }
           },
           "imports": [

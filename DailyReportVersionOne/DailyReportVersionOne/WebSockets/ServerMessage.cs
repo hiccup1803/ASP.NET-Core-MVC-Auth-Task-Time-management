@@ -1,4 +1,6 @@
-﻿using WebSocketManager.Common;
+﻿using System.Text.Json;
+using WebSocketManager.Common;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DailyReportVersionOne.WebSockets
 {
@@ -35,13 +37,26 @@ namespace DailyReportVersionOne.WebSockets
 
         private string BuildConnectionMessageBody(string username, bool isDisconnect)
         {
+
             if (isDisconnect)
             {
-                return $"User {username} left the room.";
+                var data1 = new
+                {
+                    username = username,
+                    state = "left"
+                };
+                string data = JsonSerializer.Serialize(data1);
+                return data;
             }
             else
             {
-                return $"User {username} joined the room.";
+                var data1 = new
+                {
+                    username = username,
+                    state = "join"
+                };
+                string data = JsonSerializer.Serialize(data1);
+                return data;
             }
         }
     }
