@@ -9,8 +9,10 @@ using DailyReportVersionOne.WebSockets;
 using System.Text.Json;
 using System.Text;
 using System.Threading;
+using Microsoft.AspNetCore.Authorization;
 namespace DailyReportVersionOne.Controllers
 {
+    [Authorize]
     public class DailyReportController : Controller
     {
         private readonly RoleManager<ApplicationRole> _roleManager;
