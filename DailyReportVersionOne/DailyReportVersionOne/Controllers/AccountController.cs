@@ -90,7 +90,7 @@ namespace DailyReportVersionOne.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

@@ -3,230 +3,281 @@
 @model DashboardViewModel
 @inject UserManager<ApplicationUser> _userManager
 @{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Report Management";
     var users = _userManager.Users.ToList();
+    var displayDate = Model.DisplayDate;
+    var yesterday = displayDate.AddHours(-24);
+    var tomorrow = displayDate.AddHours(24);
 }
-<h1>@ViewData["Title"]   (@DateTime.Today.ToString("D"))</h1>
-@foreach(var user in users)
-{
-    var MyProject = Model.Projects.FirstOrDefault(p => p.UserName == user.UserName);
-    var MyBid = Model.Bids.FirstOrDefault(p => p.UserName == user.UserName);
-    var MyStudy = Model.Studies.FirstOrDefault(p => p.UserName == user.UserName);
-    if (MyBid == null) continue;
-    <div class="card mb-3">
-        <div class="card-header">
-            @user.UserName
+<div class="row">
+    <div class="col card justify-content-center" style="
+            min-height:80vh;position:fixed; left:50px; top:100px;min-width:300px; max-width:300px ">
+        <div class="card-header text-lg-center">
+            <h2>Users</h2>
         </div>
-        <div class="card-body">
-             <div class="card-title">
-                 Project:
-                @if(MyProject == null)
-                {
-                    <p>Project does not exist.</p>
-                }
-                else
-                {
-                    <div class="row justify-content-center">
-                        <div class="col-2">Name: @MyProject.ProjectName</div>
-                        <div class="col-2">Budget: @MyProject.ProjectPrice US$</div>
-                        <div class="col-2">Client: @MyProject.ClientCountry</div>
-                        <div class="col-2">Progress: @MyProject.ProjectState %</div>
-                        <div class="col-2">Start: @MyProject.ProjectStartDate.Date.ToString("d")</div>
-                   </div>
-                }
-                
-             </div>
-             <div class="card-title">
-                 Bid:
-                <div class="row justify-content-center">
-                    <div class="col-2"> Upwork: @MyBid.Upwork</div>
-                    <div class="col-2"> Freelancer: @MyBid.Freelancer</div>
-                    <div class="col-2"> Workana: @MyBid.Workana</div>
-                    <div class="col-2"> CrowdWorks: @MyBid.Crowdwork</div>
-                    <div class="col-2"> OtherSites: @MyBid.OtherSite</div>
+        <div class="justify-content-center flex-column card-body" id="sidebar">
 
-                </div>
-             </div>
-            <div class="card-title">
-                Study:
-                @MyStudy.Description ;
+        
+        @foreach(var user in users)
+        {
+                <div class="mt-4 row justify-content-around" style="color: #0077cc;">
+                    
+                <h4 class ="col"style="text-align:center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                        </svg>
+                    @user.UserName
+                </h4>
+                <div class ="col" id="@user.UserName">
+                        @{
+                            var isReport = Model.Bids.FirstOrDefault(p => p.UserName == user.UserName);
+
+                        }
+                        @if (isReport == null)
+                        {
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                            </svg>
+                        }
+                        else
+                        {
+                            
+                                
+                            
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-check2-all" viewBox="0 0 16 16">
+                                <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0"/>
+                                <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708"/>
+                            </svg>
+                        }
+                    </div>
+                <hr style="width:80%"/>
             </div>
-
-        </div>
-        <div class="card-footer">
-            Success
+        }
         </div>
     </div>
-}
-<p id="stateLabel" hidden>Ready to connect...</p>
-<div hidden>
-    <label for="userName">Username:</label>
-    @{
-        var UserName = _signInManager.Context.User.Identity.Name;
-    }
-    <input id="userName" value="@UserName" />
-
-</div>
-<div hidden>
-    <label for="sendMessage">Message to send:</label>
-    <input id="sendMessage" disabled />
-    
-    <select name="usersList" id="usersList" disabled>
-        <option value="">Everybody</option>
-    </select>
-    <button id="sendButton" type="submit" disabled>Send</button>
-    <button id="closeButton" disabled>Disconnect</button>
-</div>
-
-<div id="chatLog" hidden></div>
-<script>
-    var userName = document.getElementById("userName");
-    var usersList = document.getElementById("usersList");
-    var connectButton = document.getElementById("connectButton");
-    var stateLabel = document.getElementById("stateLabel");
-    var sendMessage = document.getElementById("sendMessage");
-    var sendButton = document.getElementById("sendButton");
-    var chatLog = document.getElementById("chatLog");
-    var closeButton = document.getElementById("closeButton");
-    var socket;
-    
-    console.log(userName.value);
-
-    var connectionUrl = "ws://localhost:5099/ws?username=";
-
-    function updateState() {
-        function disable() {
-            sendMessage.disabled = true;
-            sendButton.disabled = true;
-            closeButton.disabled = true;
-            usersList.disabled = true;
-        }
-        function enable() {
-            sendMessage.disabled = false;
-            sendButton.disabled = false;
-            closeButton.disabled = false;
-            usersList.disabled = false;
-        }
-
-        //connectButton.disabled = true;
-        userName.disabled = true;
-
-        if (!socket) {
-            disable();
-        } else {
-            switch (socket.readyState) {
-                case WebSocket.CLOSED:
-                    stateLabel.innerHTML = "Closed";
-                    disable();
-                    //connectionUrl.disabled = false;
-                    connectButton.disabled = false;
-                    userName.disabled = false;
-                    break;
-                case WebSocket.CLOSING:
-                    stateLabel.innerHTML = "Closing...";
-                    disable();
-                    break;
-                case WebSocket.CONNECTING:
-                    stateLabel.innerHTML = "Connecting...";
-                    disable();
-                    break;
-                case WebSocket.OPEN:
-                    stateLabel.innerHTML = "Open";
-                    enable();
-                    break;
-                default:
-                    stateLabel.innerHTML = "Unknown WebSocket State: " + htmlEscape(socket.readyState);
-                    disable();
-                    break;
+    <div class="col-md-2">
+        
+    </div>
+    <div class="col-md-10">
+        <div class="mb-3">
+            <h1 class="mb-5">   @displayDate.ToString("D")</h1>
+            <a asp-controller="Home" asp-action="Dashboard"
+                               asp-route-Id="@yesterday.ToString()" class="btn btn-primary" type="button" class="btn btn-outline-danger" >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-left" viewBox="0 0 16 16">
+                                    <path d="M10 12.796V3.204L4.519 8zm-.659.753-5.48-4.796a1 1 0 0 1 0-1.506l5.48-4.796A1 1 0 0 1 11 3.204v9.592a1 1 0 0 1-1.659.753"></path>
+                                </svg>
+                                Prev
+            </a>
+            @if(displayDate.Date != DateTime.Today.Date)
+            {
+            <a asp-controller="Home" asp-action="Dashboard"
+                               asp-route-Id="@tomorrow.ToString()" class="btn btn-primary" type="button" class="btn btn-outline-danger" >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right" viewBox="0 0 16 16">
+                                    <path d="M6 12.796V3.204L11.481 8zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753"></path>
+                                </svg>
+                                Next
+            </a>
             }
-        }
-    }
+    
+        </div>
 
-    closeButton.onclick = function () {
-        if (!socket || socket.readyState !== WebSocket.OPEN) {
-            alert("socket not connected");
-        }
-        socket.close(1000, "Closing from client");
-    };
 
-    sendButton.onclick = function () {
-        if (!socket || socket.readyState !== WebSocket.OPEN) {
-            alert("socket not connected");
-        }
-        var data = sendMessage.value;
+        <div id="container">
+            @foreach(var user in users)
 
-        var message = {};
-        message.Type = "chat";
-        message.Sender = userName.value;
-        message.Content = data;
-        message.Receiver = usersList.value;
-        message.IsPrivate = false;
-        console.log(JSON.stringify(message));
-
-        socket.send(JSON.stringify(message));
-
-        sendMessage.value = "";
-    };
-
-    window.addEventListener("load", () => {
-        function onLoad () {
-            console.log("ok");
-            stateLabel.innerHTML = "Connecting";
-            socket = new WebSocket(connectionUrl + userName.value);
-            socket.onopen = function (event) {
-                updateState();
-
-                console.log("socket opened", event);
-                //var message = {};
-                //message.Type = "connection";
-                //message.Sender = userName.value;
-                //console.log(JSON.stringify(message));
-                //socket.send(JSON.stringify(message));
-            };
-            socket.onclose = function (event) {
-                //updateState();
-                //chatLog.innerHTML += '<p>Connection closed: ' + htmlEscape(event.reason) + '</p>';
-            };
-            //socket.onerror = updateState;
-            socket.onmessage = function (event) {
-                console.log(event.data);
-                var receivedMessage = JSON.parse(event.data);
+            {
+        
+                var MyProject = Model.Projects.FirstOrDefault(p => p.UserName == user.UserName);
+                var MyBid = Model.Bids.FirstOrDefault(p => p.UserName == user.UserName);
+                var MyStudy = Model.Studies.FirstOrDefault(p => p.UserName == user.UserName);
+                if (MyBid == null) continue;
+                if (MyStudy == null) continue;
+                <div class="card mb-3">
+                    <div class="card-header">
+                        @user.UserName
+                    </div>
+                    <div class="card-body">
+                         <div class="card-title">
+                             Project:
+                            @if(MyProject == null)
+                            {
+                                <p>Project does not exist.</p>
+                            }
+                            else
+                            {
+                                <div class="row justify-content-center">
+                                    <div class="col-2">Name: @MyProject.ProjectName</div>
+                                    <div class="col-2">Budget: @MyProject.ProjectPrice US$</div>
+                                    <div class="col-2">Client: @MyProject.ClientCountry</div>
+                                    <div class="col-2">Progress: @MyProject.ProjectState %</div>
+                                    <div class="col-2">Start: @MyProject.ProjectStartDate.Date.ToString("d")</div>
+                               </div>
+                            }
                 
-                if (receivedMessage.Content) {
-                    chatLog.innerHTML += '<p>' + htmlEscape(receivedMessage.Content) + '</p>';
-                }
-                if (receivedMessage.Type == "CHAT" && receivedMessage.Content == "Here DailyReport Newly Added!!!") {
+                         </div>
+                         <div class="card-title">
+                             Bid:
+                            <div class="row justify-content-center">
+                                <div class="col-2"> Upwork: @MyBid.Upwork</div>
+                                <div class="col-2"> Freelancer: @MyBid.Freelancer</div>
+                                <div class="col-2"> Workana: @MyBid.Workana</div>
+                                <div class="col-2"> CrowdWorks: @MyBid.Crowdwork</div>
+                                <div class="col-2"> OtherSites: @MyBid.OtherSite</div>
 
-                    console.log("Here arrived!!!");
-                    console.log(receivedMessage.Content);
-                    window.location.reload(true);
-                }
-                if (receivedMessage.Type === "CONNECTION" && receivedMessage.Users) {
-                    usersList.options.length = 0;;
-                    var cFirst = document.createElement("option");
-                    cFirst.value = "";
-                    cFirst.text = "Everybody"
-                    usersList.add(cFirst);
+                            </div>
+                         </div>
+                        <div class="card-title">
+                            Study:
+                            @MyStudy.Description ;
+                        </div>
 
-                    receivedMessage.Users.forEach((user) => {
-                        var c = document.createElement("option");
-                        c.value = user;
-                        c.text = user;
+                    </div>
+                    <div class="card-footer">
+                        Success
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@{
+  var UserName = _signInManager.Context.User.Identity.Name;
+}
+<label id="UserName" hidden>@UserName</label>
 
-                        usersList.options.add(c);
-                    });
+    @if (displayDate.Date == DateTime.Today.Date)
+    {
+        <label id="DisplayDate" hidden>Today</label>
+    }
+    else
+    {
+        <label id="DisplayDate" hidden>NotToday</label>
+    }
+@* <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script> *@
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+      
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
+      
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+      
+    <script type="text/javascript">
+        var message = document.getElementById("message");
+        var text = message.textContent;
+        toastr.options.timeOut = 1500;
+        console.log(text) ;
+        if(text == "Again") toastr.error("You already reported today!!!");
+    </script>
+<script>
+    window.addEventListener("load", () => {
+        var test_data = "KSR_PLAYBOY"
+        function onLoad () {
+            var socket;
+            var connectionUrl = "ws://localhost:5099/ws?username=";
+            var UserName = (document.getElementById("UserName")) ;
+            console.log("UserName" + UserName.textContent);
+            socket = new WebSocket(connectionUrl + UserName.textContent);
+            var isToday = document.getElementById("DisplayDate") ; 
+            socket.onopen = function (event) {console.log("socket opened!!!") };
+            socket.onmessage = function (event) {
+                var receivedMessage = JSON.parse(event.data);
+                console.log("receivedMessage") ;
+                var data = JSON.parse(receivedMessage.Content) ;
+                if(receivedMessage.Type == "CHAT"){
+                    
+                    toastr.options.timeOut = 1500;
+                    toastr.success(data.username + " successfuly reported!!!");
+                    var addCheck = document.getElementById(data.username) ;
+                    if(isToday.textContent == "Today") {
+                        add_newCard(data);
+                        addCheck.innerHTML=`
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-check2-all" viewBox="0 0 16 16">
+                                <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0"/>
+                                <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708"/>
+                            </svg>
+                        ` 
+                    }
                 }
+                if(receivedMessage.Type == "CONNECTION"){
+                    if(data.state == "join"){
+                        
+
+                        var isExist = document.getElementById(data.username) ;
+                        if(isExist == null){
+                            console.log("add one") ;
+                            toastr.options.timeOut = 1500;
+                            toastr.success(data.username + " newly entered!!!");
+                            var sidebar = document.getElementById("sidebar") ;
+                            let new_user = document.createElement("div") ;
+                            new_user.classList = "mt-4 row justify-content-center" ;
+                            new_user.style.color = "white" ;
+                            new_user.innerHTML = `
+                                
+                                <div class ="col" id="${data.username}">
+
+                                        <h4 class ="col"style="text-align:center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                                                </svg>
+                                            ${data.UserName}
+                                        </h4>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                    </svg>
+                    
+                    
+                                </div>
+                            `
+                            sidebar.appendChild(new_user) ;
+                        }
+                    }
+                }
+
             };
         };
         onLoad();
-    })
+        
+        function add_newCard(data){
+            
+            let new_card = document.createElement("div");
+            new_card.classList = "card mb-3";
+            new_card.innerHTML = `
+            <div class="card-header">
+                ${data.username}
+            </div>
+            <div class="card-body">
+              <div class="card-title">
+                Project:
+                <div class="row justify-content-center">
+                    <div class="col-2">Name:${data.projectName} </div>
+                    <div class="col-2">Budget: ${data.projectPrice}</div>
+                    <div class="col-2">Client: ${data.clientCountry}</div>
+                    <div class="col-2">Progress: ${data.projectState}%</div>
+                    <div class="col-2">Start: ${data.projectStartDate}</div>
+                </div>
+              </div>
+                <div class="card-title">
+                    Bid:
+                <div class="row justify-content-center">
+                    <div class="col-2"> Upwork: ${data.upwork}</div>
+                    <div class="col-2"> Freelancer: ${data.freelancer}</div>
+                    <div class="col-2"> Workana: ${data.workana}</div>
+                    <div class="col-2"> CrowdWorks: ${data.crowdwork}</div>
+                    <div class="col-2"> OtherSites: ${data.othersite}</div>
 
-    function htmlEscape(str) {
-        return str.toString()
-            .replace(/&/g, '&amp;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
-    }
+                </div>
+                </div>
+                <div class="card-title">
+                Study: ${data.studyDescription}
+                </div>
+            </div>
+            <div class="card-footer">
+                Success
+            </div>`
+            document.getElementById("container").appendChild(new_card)
+                
+                }
+            })
 </script>

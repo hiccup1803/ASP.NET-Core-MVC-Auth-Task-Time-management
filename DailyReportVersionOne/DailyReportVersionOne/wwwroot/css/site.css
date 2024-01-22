@@ -39,3 +39,6 @@ body {
     background-color: white;
     z-index:99999;
 }
+.navbar-light .navbar-nav .nav-link {
+    color: #0077cc;
+}

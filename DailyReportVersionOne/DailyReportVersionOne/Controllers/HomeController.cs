@@ -39,6 +39,7 @@ namespace DailyReportVersionOne.Controllers
             model.Projects = ProjectResult.ToArray();
             model.Bids = BidResult.ToArray();
             model.Studies = StudyResult.ToArray();
+            model.DisplayDate = DateTime.Parse(id);
             return View(model);
         }
 

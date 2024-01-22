@@ -9,6 +9,14 @@
       "PackagePath": "staticwebassets\\Images\\AccessDenided.jpg"
     },
     {
+      "Id": "D:\\New folder\\DailyReportOneGroup\\DailyReportVersionOne\\DailyReportVersionOne\\wwwroot\\Images\\logo.png",
+      "PackagePath": "staticwebassets\\Images\\logo.png"
+    },
+    {
+      "Id": "D:\\New folder\\DailyReportOneGroup\\DailyReportVersionOne\\DailyReportVersionOne\\wwwroot\\Images\\totchka.png",
+      "PackagePath": "staticwebassets\\Images\\totchka.png"
+    },
+    {
       "Id": "D:\\New folder\\DailyReportOneGroup\\DailyReportVersionOne\\DailyReportVersionOne\\wwwroot\\css\\login.css",
       "PackagePath": "staticwebassets\\css\\login.css"
     },
@@ -17,12 +25,24 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
+      "Id": "D:\\New folder\\DailyReportOneGroup\\DailyReportVersionOne\\DailyReportVersionOne\\wwwroot\\css\\toastr.css",
+      "PackagePath": "staticwebassets\\css\\toastr.css"
+    },
+    {
+      "Id": "D:\\New folder\\DailyReportOneGroup\\DailyReportVersionOne\\DailyReportVersionOne\\wwwroot\\css\\user.css",
+      "PackagePath": "staticwebassets\\css\\user.css"
+    },
+    {
       "Id": "D:\\New folder\\DailyReportOneGroup\\DailyReportVersionOne\\DailyReportVersionOne\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
       "Id": "D:\\New folder\\DailyReportOneGroup\\DailyReportVersionOne\\DailyReportVersionOne\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "D:\\New folder\\DailyReportOneGroup\\DailyReportVersionOne\\DailyReportVersionOne\\wwwroot\\js\\toastr.js",
+      "PackagePath": "staticwebassets\\js\\toastr.js"
     },
     {
       "Id": "D:\\New folder\\DailyReportOneGroup\\DailyReportVersionOne\\DailyReportVersionOne\\wwwroot\\lib\\bootstrap\\LICENSE",

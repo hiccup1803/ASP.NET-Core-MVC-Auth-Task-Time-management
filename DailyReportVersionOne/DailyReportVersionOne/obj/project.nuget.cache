@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "crb+kJPfZmH0G2oZpKzgNTiyC3Z+F9n/PMcTfdkIS4qDpdF4o3SOT7lEVUThY9TGjGCb3haut3nM+/F+Xbd6ZA==",
+  "dgSpecHash": "WZnZgTnYjjaPmcdmsEAlpRgKcw57KVszSwpvECUHAra1Iabi1oleG6iLa49fi3W6SZ9ERSpaEVgbfrjtoLaT2w==",
   "success": true,
   "projectFilePath": "D:\\New folder\\DailyReportOneGroup\\DailyReportVersionOne\\DailyReportVersionOne\\DailyReportVersionOne.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\speedDemon\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\speedDemon\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
     "C:\\Users\\speedDemon\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\speedDemon\\.nuget\\packages\\jquery\\1.6.3\\jquery.1.6.3.nupkg.sha512",
     "C:\\Users\\speedDemon\\.nuget\\packages\\libuv\\1.9.1\\libuv.1.9.1.nupkg.sha512",
     "C:\\Users\\speedDemon\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\8.0.1\\microsoft.aspnetcore.cryptography.internal.8.0.1.nupkg.sha512",
     "C:\\Users\\speedDemon\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\8.0.1\\microsoft.aspnetcore.cryptography.keyderivation.8.0.1.nupkg.sha512",
@@ -197,6 +198,7 @@
     "C:\\Users\\speedDemon\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512",
     "C:\\Users\\speedDemon\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\speedDemon\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
+    "C:\\Users\\speedDemon\\.nuget\\packages\\toastr\\2.1.1\\toastr.2.1.1.nupkg.sha512",
     "C:\\Users\\speedDemon\\.nuget\\packages\\websocketmanager\\1.0.1\\websocketmanager.1.0.1.nupkg.sha512",
     "C:\\Users\\speedDemon\\.nuget\\packages\\websocketmanager.common\\1.0.0\\websocketmanager.common.1.0.0.nupkg.sha512"
   ],

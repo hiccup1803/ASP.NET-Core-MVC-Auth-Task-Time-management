@@ -34,12 +34,13 @@
 
         public string BuildChatMessageBody()
         {
-            string receiver = this.Receiver == string.Empty ? "Everybody" : this.Receiver;
-            if(this.Content == "Here DailyReport Newly Added!!!")
-            {
-                return this.Content;
-            }
-            return $"{this.Sender} to {receiver}: {this.Content}";
+            return this.Content;
+            //string receiver = this.Receiver == string.Empty ? "Everybody" : this.Receiver;
+            //if(this.Content == "Here DailyReport Newly Added!!!")
+            //{
+            //    return this.Content;
+            //}
+            //return $"{this.Sender} to {receiver}: {this.Content}";
         }
 
         public string GetMessageType()
